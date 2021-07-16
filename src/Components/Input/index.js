@@ -1,5 +1,10 @@
 import React from "react";
-import { TextField, InputAdornment, TextareaAutosize } from "@material-ui/core";
+import {
+  TextField,
+  InputAdornment,
+  TextareaAutosize,
+  Tooltip,
+} from "@material-ui/core";
 import HelpOutlined from "@material-ui/icons/HelpOutlineOutlined";
 import CheckBox from "@material-ui/icons/CheckBox";
 import Error from "@material-ui/icons/Error";
@@ -7,46 +12,69 @@ import Error from "@material-ui/icons/Error";
 export const Input = ({
   name,
   value,
-  fullWidth = true,
-  showIcon = true,
-  isTextArea = false,
   errors,
+  children = null,
+  showIcon = true,
+  fullWidth = true,
+  type = "input", // input | textarea | select
   ...props
 }) => {
-  const Component = isTextArea ? TextareaAutosize : TextField;
-  const InputProps = {
-    endAdornment: (
-      <InputAdornment position="end">
-        {errors[name] ? (
-          <Error style={{ color: "red" }} />
-        ) : (
-          <CheckBox style={{ color: "green" }} />
-        )}
-      </InputAdornment>
-    ),
-  };
+  let Component = TextField;
+  let ComponentProps;
 
-  const showError = errors[name] ? true : null;
+  switch (type) {
+    case "input":
+      const showError = errors[name] ? true : null;
 
-  const ComponentProps = isTextArea
-    ? {
+      const InputProps = {
+        endAdornment: (
+          <InputAdornment position="end">
+            {errors[name] ? (
+              <Error style={{ color: "red" }} />
+            ) : (
+              <CheckBox style={{ color: "green" }} />
+            )}
+          </InputAdornment>
+        ),
+      };
+
+      ComponentProps = {
+        fullWidth,
+        size: "small",
+        variant: "outlined",
+        error: value.length > 0 ? showError : null,
+        InputProps: value.length > 0 ? InputProps : null,
+      };
+      break;
+    case "textarea":
+      Component = TextareaAutosize;
+
+      ComponentProps = {
         minRows: 7,
         maxRows: 7,
-      }
-    : {
-        fullWidth,
-        InputProps: value.length > 0 ? InputProps : null,
-        error: value.length > 0 ? showError : null,
+      };
+      break;
+    case "select":
+      ComponentProps = {
+        select: true,
         size: "small",
         variant: "outlined",
       };
+      break;
+    default:
+    // Default Case
+  }
 
   return (
     <>
-      {showIcon && <HelpOutlined style={{ marginRight: "0.5rem" }} />}
-      <Component name={name} {...ComponentProps} {...props} />
+      {showIcon && (
+        <Tooltip arrow placement="left" title="Help">
+          <HelpOutlined style={{ marginRight: "0.5rem" }} />
+        </Tooltip>
+      )}
+      <Component name={name} value={value} {...ComponentProps} {...props}>
+        {children}
+      </Component>
     </>
   );
 };
-
-//export default Input;

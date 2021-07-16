@@ -25,6 +25,12 @@ const styles = (theme) => ({
   question: {
     fontSize: 16,
   },
+  requiredFields: {
+    color: "red",
+  },
+  disabledInput: {
+    background: "#ececec",
+  },
 
   gridFlex: {
     display: "flex",
@@ -35,37 +41,47 @@ const styles = (theme) => ({
 
 function App(props) {
   const { classes } = props;
-  const [selectValue, setSelectValue] = useState(null);
-  const [inputs, setInputs] = useState({});
+  const [inputs, setInputs] = useState({
+    select: "Aperitif",
+  });
   const [errors, setErrors] = useState({});
+  const REQUIRED_INPUTS = ["type", "vintage", "color", "style"];
 
   function handleValidation(e) {
-    console.log(e);
     const { value, name } = e.target;
-
     setInputs({
       ...inputs,
       [name]: value,
     });
 
-    if (!value.match(/^[a-zA-Z]+$/)) {
+    if (!value.match(/^[a-zA-Z]*$/)) {
       setErrors({
         ...errors,
         [name]: true,
       });
     } else {
-      setErrors({
-        ...errors,
-        [name]: false,
-      });
+      const newState = { ...errors, [name]: false };
+      delete newState[name];
+      setErrors(newState);
     }
   }
 
   const onSubmit = () => {
-    //Si la variable errores existe, debo decir que inputs estan mal escritos.
-    //En caso contrario hacer el envio de los datos
+    const failedInputs = REQUIRED_INPUTS.filter(
+      (requiredInput) => !inputs[requiredInput]
+    );
 
-    alert("Si hay errores debo decirlo");
+    if (failedInputs.length > 0) {
+      return alert(`Required input ${failedInputs[0]} must not be empty`);
+    }
+
+    const errorKeys = Object.keys(errors);
+
+    if (errorKeys.length > 0) {
+      return alert(`Input ${errorKeys[0]} has invalid characters  `);
+    }
+
+    alert("Submit Form to Firebase!");
   };
 
   const names = ["Aperitif", "Option 2", "Other"];
@@ -95,7 +111,8 @@ function App(props) {
             className={`${classes.gridFlex} ${classes.indentation}`}
           >
             <Typography variant="subtitle1" className={classes.question}>
-              What is the type of the wine? *
+              What is the type of the wine?{" "}
+              <span className={classes.requiredFields}>*</span>
             </Typography>
           </Grid>
           <Grid item xs={12} sm={5} className={classes.gridFlex}>
@@ -115,7 +132,8 @@ function App(props) {
             className={`${classes.gridFlex} ${classes.indentation}`}
           >
             <Typography variant="subtitle1" className={classes.question}>
-              What is the vintage? *
+              What is the vintage?{" "}
+              <span className={classes.requiredFields}>*</span>
             </Typography>
           </Grid>
           <Grid item xs={12} sm={5} className={classes.gridFlex}>
@@ -126,6 +144,7 @@ function App(props) {
               value={inputs["vintage"] || ""}
               errors={errors}
               fullWidth={false}
+              style={{ width: "23ch" }}
             />
           </Grid>
 
@@ -142,10 +161,10 @@ function App(props) {
           <Grid item xs={12} sm={5} className={classes.gridFlex}>
             <Input
               name="specific"
-              style={{ width: "70%" }}
-              isTextArea
-              value={inputs["specific"] || ""}
+              type="textarea"
               errors={errors}
+              style={{ width: "70%" }}
+              value={inputs["specific"] || ""}
               onChange={(e) => handleValidation(e)}
             />
           </Grid>
@@ -161,17 +180,14 @@ function App(props) {
             </Typography>
           </Grid>
           <Grid item xs={12} sm={5} className={classes.gridFlex}>
-            <HelpOutlined style={{ marginRight: "0.5rem" }} />
-            <TextField
+            <Input
               name="select"
-              size="small"
-              variant="outlined"
+              type="select"
+              value={inputs["select"]}
               style={{ minWidth: "23ch" }}
-              select
               SelectProps={{
-                //onChange: (val) => setSelectValue(val.target.value),
-                onChange: (val) => handleValidation(val),
                 multiline: true,
+                onChange: (val) => handleValidation(val),
               }}
             >
               {names.map((name) => (
@@ -179,20 +195,19 @@ function App(props) {
                   {name}
                 </MenuItem>
               ))}
-            </TextField>
-
-            <select>
-              <option>opcion 1</option>
-            </select>
+            </Input>
 
             <Input
               name="other"
-              showIcon={false}
-              disabled={selectValue !== "Other"}
-              style={{ marginLeft: "50px" }}
-              value={inputs["other"] || ""}
               errors={errors}
+              showIcon={false}
+              value={inputs["other"] || ""}
+              style={{ marginLeft: "50px" }}
               onChange={(e) => handleValidation(e)}
+              disabled={inputs["select"] !== "Other"}
+              className={
+                inputs["select"] !== "Other" ? classes.disabledInput : null
+              }
             />
           </Grid>
         </Grid>
@@ -210,7 +225,8 @@ function App(props) {
             className={`${classes.gridFlex} ${classes.indentation}`}
           >
             <Typography variant="subtitle1" className={classes.question}>
-              What is the color of wine? *
+              What is the color of wine?{" "}
+              <span className={classes.requiredFields}>*</span>
             </Typography>
           </Grid>
           <Grid item xs={12} sm={6} className={classes.gridFlex}>
@@ -230,7 +246,8 @@ function App(props) {
             className={`${classes.gridFlex} ${classes.indentation}`}
           >
             <Typography variant="subtitle1" className={classes.question}>
-              What is the style? *
+              What is the style?{" "}
+              <span className={classes.requiredFields}>*</span>
             </Typography>
           </Grid>
           <Grid item xs={12} sm={6} className={classes.gridFlex}>
