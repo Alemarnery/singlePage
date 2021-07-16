@@ -24,10 +24,8 @@ const styles = (theme) => ({
   root: {
     flexGrow: 1,
   },
-  formControl: {
-    margin: theme.spacing(1),
-    minWidth: 120,
-    with: 100,
+  textarea: {
+    width: "70%",
   },
 });
 
@@ -37,46 +35,52 @@ function App(props) {
 
   return (
     <Container fixed>
-      <Grid container spacing={0}>
-        <Grid item xs={12} sm={12} md={12}>
-          <Typography variant="h3" gutterBottom>
-            Listing Score:10
-          </Typography>
-        </Grid>
-        <Grid item xs={12} sm={12} md={12}>
-          <Typography variant="h6" gutterBottom>
-            Tell us a bit about your wine
-          </Typography>
-        </Grid>
-      </Grid>
+      <Typography variant="h3" gutterBottom>
+        Listing Score:10
+      </Typography>
+      <Typography variant="h6" gutterBottom>
+        Tell us a bit about your wine
+      </Typography>
 
       {/* Primer Formulario */}
       <Grid container spacing={2}>
-        <Grid item xs={6} sm={6} md={6}>
+        <Grid item xs={12} sm={6} md={6}>
           <Typography variant="subtitle1" gutterBottom>
             What is the type of the wine?
           </Typography>
         </Grid>
-        <Grid item xs={6} sm={6} md={6}>
-          <FormControl className={classes.formControl} variant="outlined">
-            <OutlinedInput />
+        <Grid item xs={12} sm={6} md={6}>
+          <div>
+            <TextField
+              id="outlined-basic"
+              variant="outlined"
+              fullWidth={true}
+              required
+              error
+            />
             <FormHelperText>Some important helper text</FormHelperText>
-          </FormControl>
+          </div>
         </Grid>
 
-        <Grid item xs={6} sm={6} md={6}>
+        <Grid item xs={12} sm={6} md={6}>
           <Typography variant="subtitle1" gutterBottom>
             What is the vintage?
           </Typography>
         </Grid>
-        <Grid item xs={6} sm={6} md={6}>
-          <FormControl className={classes.formControl} variant="outlined">
-            <OutlinedInput />
+        <Grid item xs={12} sm={6} md={6}>
+          <div>
+            <TextField
+              id="outlined-basic"
+              variant="outlined"
+              //fullWidth={true}
+              required
+              //error
+            />
             <FormHelperText>Some important helper text</FormHelperText>
-          </FormControl>
+          </div>
         </Grid>
 
-        <Grid item xs={6} sm={6} md={6}>
+        <Grid item xs={12} sm={6} md={6}>
           <Typography variant="subtitle1" gutterBottom>
             Any note specific for this vintage?
           </Typography>
@@ -85,18 +89,22 @@ function App(props) {
             changes made between the vintage and previus vintage(s)?
           </Typography>
         </Grid>
-        <Grid item xs={6} sm={6} md={6}>
-          <FormControl className={classes.formControl} variant="outlined">
-            <TextareaAutosize minRows={5} maxRows={10} />
-          </FormControl>
+        <Grid item xs={12} sm={6} md={6}>
+          <div>
+            <TextareaAutosize
+              minRows={5}
+              maxRows={10}
+              className={classes.textarea}
+            />
+          </div>
         </Grid>
 
-        <Grid item xs={6} sm={6} md={6}>
+        <Grid item xs={12} sm={6} md={6}>
           <Typography variant="subtitle1" gutterBottom>
             What type of wine is this?
           </Typography>
         </Grid>
-        <Grid item xs={6} sm={6} md={6}>
+        <Grid item xs={12} sm={6} md={6}>
           <FormControl className={classes.formControl}>
             <Select native variant="outlined" autoWidth={true}>
               <option value="Aperitif">Aperitif</option>
