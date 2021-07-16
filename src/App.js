@@ -1,132 +1,120 @@
 import React from "react";
 import PropTypes from "prop-types";
 import {
-  Container,
-  Typography,
   Grid,
-  Box,
-  OutlinedInput,
-  FormControl,
-  InputLabel,
-  TextareaAutosize,
+  Container,
   TextField,
-  Select,
-  MenuItem,
+  Typography,
   FormHelperText,
-  ListSubheader,
+  Box,
+  TextareaAutosize,
+  Select,
 } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 
 const styles = (theme) => ({
-  divider: {
-    margin: `${theme.spacing.unit * 2}px 0`,
-  },
   root: {
     flexGrow: 1,
   },
+  form: {
+    "& .MuiTextField-root": {
+      margin: theme.spacing(1),
+      //width: "25ch",
+    },
+  },
+  question: {
+    fontSize: 18,
+  },
+  divider: {
+    margin: `${theme.spacing.unit * 2}px 0`,
+  },
   textarea: {
     width: "70%",
+  },
+  textStyle: {
+    display: "flex",
+    alignItems: "center",
   },
 });
 
 function App(props) {
   const { classes } = props;
-  console.log(classes);
 
   return (
     <Container fixed>
-      <Typography variant="h3" gutterBottom>
-        Listing Score:10
-      </Typography>
-      <Typography variant="h6" gutterBottom>
-        Tell us a bit about your wine
-      </Typography>
+      <div className={classes.root}>
+        <Grid container>
+          <Grid item xs={12}>
+            <Typography variant="h3">Listing Score: 10</Typography>
+            <Typography variant="h4">Tell us a bit about your wine</Typography>
+          </Grid>
 
-      {/* Primer Formulario */}
-      <Grid container spacing={2}>
-        <Grid item xs={12} sm={6} md={6}>
-          <Typography variant="subtitle1" gutterBottom>
-            What is the type of the wine?
-          </Typography>
-        </Grid>
-        <Grid item xs={12} sm={6} md={6}>
-          <div>
-            <TextField
-              id="outlined-basic"
-              variant="outlined"
-              fullWidth={true}
-              required
-              error
-            />
+          <Grid item xs={12} sm={6} className={classes.textStyle}>
+            <Typography variant="subtitle1" className={classes.question}>
+              What is the type of the wine?
+            </Typography>
+          </Grid>
+          <Grid item xs={12} sm={5}>
+            <TextField required fullWidth variant="outlined" size="small" />
             <FormHelperText>Some important helper text</FormHelperText>
-          </div>
-        </Grid>
+          </Grid>
 
-        <Grid item xs={12} sm={6} md={6}>
-          <Typography variant="subtitle1" gutterBottom>
-            What is the vintage?
-          </Typography>
-        </Grid>
-        <Grid item xs={12} sm={6} md={6}>
-          <div>
-            <TextField
-              id="outlined-basic"
-              variant="outlined"
-              //fullWidth={true}
-              required
-              //error
-            />
-            <FormHelperText>Some important helper text</FormHelperText>
-          </div>
-        </Grid>
+          <Grid item xs={12} sm={6} className={classes.textStyle}>
+            <Typography variant="subtitle1" className={classes.question}>
+              What is the vintage?
+            </Typography>
+          </Grid>
+          <Grid item xs={12} sm={5}>
+            <TextField required variant="outlined" />
+          </Grid>
 
-        <Grid item xs={12} sm={6} md={6}>
-          <Typography variant="subtitle1" gutterBottom>
-            Any note specific for this vintage?
-          </Typography>
-          <Typography variant="subtitle2" gutterBottom>
-            Examples: Weather, special circumstances, significant or interesting
-            changes made between the vintage and previus vintage(s)?
-          </Typography>
-        </Grid>
-        <Grid item xs={12} sm={6} md={6}>
-          <div>
+          <Grid item xs={12} sm={6}>
+            <Typography variant="subtitle1" className={classes.question}>
+              Any note specific for this vintage?
+            </Typography>
+            <Typography variant="subtitle1">
+              Examples: Weather, special circumstances, significant or
+              interesting changes made between the vintage and previus
+              vintage(s)?
+            </Typography>
+          </Grid>
+          <Grid item xs={12} sm={5}>
             <TextareaAutosize
-              minRows={5}
-              maxRows={10}
+              minRows={7}
+              maxRows={7}
               className={classes.textarea}
             />
-          </div>
-        </Grid>
+          </Grid>
 
-        <Grid item xs={12} sm={6} md={6}>
-          <Typography variant="subtitle1" gutterBottom>
-            What type of wine is this?
-          </Typography>
-        </Grid>
-        <Grid item xs={12} sm={6} md={6}>
-          <FormControl className={classes.formControl}>
-            <Select native variant="outlined" autoWidth={true}>
+          <Grid item xs={12} sm={6} className={classes.textStyle}>
+            <Typography variant="subtitle1" className={classes.question}>
+              What type of wine is this?
+            </Typography>
+          </Grid>
+          <Grid item xs={12} sm={5} style={{ display: "flex" }}>
+            <Select native variant="outlined" style={{ minWidth: "23ch" }}>
               <option value="Aperitif">Aperitif</option>
               <option value={2}>Option 2</option>
               <option value={4}>Other</option>
             </Select>
-          </FormControl>
-          <FormControl className={classes.formControl}>
-            <OutlinedInput />
-            <FormHelperText>Some important helper text</FormHelperText>
-          </FormControl>
+            <TextField
+              required
+              fullWidth
+              variant="outlined"
+              style={{ marginLeft: "50px" }}
+            />
+          </Grid>
         </Grid>
-      </Grid>
 
-      {/* Segundo Formulario */}
-      <Grid container spacing={1}>
-        <Grid item xs={12} sm={12} md={12}>
-          <Box bgcolor="primary.main" color="primary.contrastText" p={2}>
-            Segundo Formulario
-          </Box>
+        {/* Segundo Formulario */}
+        <Grid container>
+          <Grid item xs={12}>
+            <Box bgcolor="primary.main" color="primary.contrastText" p={2}>
+              Segundo Formulario
+            </Box>
+          </Grid>
         </Grid>
-      </Grid>
+      </div>
     </Container>
   );
 }
