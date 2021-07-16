@@ -1,15 +1,19 @@
 import React from "react";
 import PropTypes from "prop-types";
 import {
+  Container,
   Typography,
-  Paper,
   Grid,
   Box,
-  Input,
   OutlinedInput,
   FormControl,
   InputLabel,
+  TextareaAutosize,
+  TextField,
+  Select,
+  MenuItem,
   FormHelperText,
+  ListSubheader,
 } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 
@@ -20,51 +24,102 @@ const styles = (theme) => ({
   root: {
     flexGrow: 1,
   },
-  paper: {
-    padding: theme.spacing.unit * 2,
-    textAlign: "center",
-    color: theme.palette.text.primary,
+  formControl: {
+    margin: theme.spacing(1),
+    minWidth: 120,
+    with: 100,
   },
 });
 
 function App(props) {
   const { classes } = props;
+  console.log(classes);
 
   return (
-    <div className={classes.root}>
-      <Typography variant="h3" gutterBottom>
-        Listing Score:10
-      </Typography>
+    <Container fixed>
+      <Grid container spacing={0}>
+        <Grid item xs={12} sm={12} md={12}>
+          <Typography variant="h3" gutterBottom>
+            Listing Score:10
+          </Typography>
+        </Grid>
+        <Grid item xs={12} sm={12} md={12}>
+          <Typography variant="h6" gutterBottom>
+            Tell us a bit about your wine
+          </Typography>
+        </Grid>
+      </Grid>
 
-      <Grid container spacing={1}>
-        {/* Primer Formulario */}
-        <Grid item xs={12} sm={8} md={8}>
-          <Paper className={classes.paper}>
-            <FormControl className={classes.formControl} variant="outlined">
-              <OutlinedInput />
-              <FormHelperText id="component-helper-text">
-                Some important helper text
-              </FormHelperText>
-            </FormControl>
-
-            <FormControl>
-              <InputLabel htmlFor="my-input">Email address</InputLabel>
-              <Input id="my-input" aria-describedby="my-helper-text" />
-              <FormHelperText id="my-helper-text">
-                We'll never share your email.
-              </FormHelperText>
-            </FormControl>
-          </Paper>
+      {/* Primer Formulario */}
+      <Grid container spacing={2}>
+        <Grid item xs={6} sm={6} md={6}>
+          <Typography variant="subtitle1" gutterBottom>
+            What is the type of the wine?
+          </Typography>
+        </Grid>
+        <Grid item xs={6} sm={6} md={6}>
+          <FormControl className={classes.formControl} variant="outlined">
+            <OutlinedInput />
+            <FormHelperText>Some important helper text</FormHelperText>
+          </FormControl>
         </Grid>
 
-        {/* Segundo Formulario */}
+        <Grid item xs={6} sm={6} md={6}>
+          <Typography variant="subtitle1" gutterBottom>
+            What is the vintage?
+          </Typography>
+        </Grid>
+        <Grid item xs={6} sm={6} md={6}>
+          <FormControl className={classes.formControl} variant="outlined">
+            <OutlinedInput />
+            <FormHelperText>Some important helper text</FormHelperText>
+          </FormControl>
+        </Grid>
+
+        <Grid item xs={6} sm={6} md={6}>
+          <Typography variant="subtitle1" gutterBottom>
+            Any note specific for this vintage?
+          </Typography>
+          <Typography variant="subtitle2" gutterBottom>
+            Examples: Weather, special circumstances, significant or interesting
+            changes made between the vintage and previus vintage(s)?
+          </Typography>
+        </Grid>
+        <Grid item xs={6} sm={6} md={6}>
+          <FormControl className={classes.formControl} variant="outlined">
+            <TextareaAutosize minRows={5} maxRows={10} />
+          </FormControl>
+        </Grid>
+
+        <Grid item xs={6} sm={6} md={6}>
+          <Typography variant="subtitle1" gutterBottom>
+            What type of wine is this?
+          </Typography>
+        </Grid>
+        <Grid item xs={6} sm={6} md={6}>
+          <FormControl className={classes.formControl}>
+            <Select native variant="outlined" autoWidth={true}>
+              <option value="Aperitif">Aperitif</option>
+              <option value={2}>Option 2</option>
+              <option value={4}>Other</option>
+            </Select>
+          </FormControl>
+          <FormControl className={classes.formControl}>
+            <OutlinedInput />
+            <FormHelperText>Some important helper text</FormHelperText>
+          </FormControl>
+        </Grid>
+      </Grid>
+
+      {/* Segundo Formulario */}
+      <Grid container spacing={1}>
         <Grid item xs={12} sm={12} md={12}>
           <Box bgcolor="primary.main" color="primary.contrastText" p={2}>
             Segundo Formulario
           </Box>
         </Grid>
       </Grid>
-    </div>
+    </Container>
   );
 }
 
