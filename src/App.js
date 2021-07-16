@@ -6,10 +6,8 @@ import {
   TextField,
   Typography,
   Button,
-  InputAdornment,
   MenuItem,
 } from "@material-ui/core";
-import CheckBox from "@material-ui/icons/CheckBox";
 import HelpOutlined from "@material-ui/icons/HelpOutlineOutlined";
 import { withStyles } from "@material-ui/core/styles";
 import { Input } from "./Components/Input";
@@ -42,6 +40,7 @@ function App(props) {
   const [errors, setErrors] = useState({});
 
   function handleValidation(e) {
+    console.log(e);
     const { value, name } = e.target;
 
     setInputs({
@@ -69,9 +68,8 @@ function App(props) {
     alert("Si hay errores debo decirlo");
   };
 
-  console.log(inputs);
-
   const names = ["Aperitif", "Option 2", "Other"];
+  let total = Object.values(inputs).filter((item) => item !== "").length;
 
   return (
     <Container fixed>
@@ -79,7 +77,7 @@ function App(props) {
         <Grid container>
           <Grid item xs={12}>
             <Typography variant="h3">
-              Listing Score: {inputs === null ? 0 : Object.keys(inputs).length}
+              Listing Score: {inputs === null ? 0 : total}
             </Typography>
           </Grid>
         </Grid>
@@ -171,7 +169,8 @@ function App(props) {
               style={{ minWidth: "23ch" }}
               select
               SelectProps={{
-                onChange: (val) => setSelectValue(val.target.value),
+                //onChange: (val) => setSelectValue(val.target.value),
+                onChange: (val) => handleValidation(val),
                 multiline: true,
               }}
             >
@@ -181,6 +180,10 @@ function App(props) {
                 </MenuItem>
               ))}
             </TextField>
+
+            <select>
+              <option>opcion 1</option>
+            </select>
 
             <Input
               name="other"

@@ -25,6 +25,9 @@ export const Input = ({
       </InputAdornment>
     ),
   };
+
+  const showError = errors[name] ? true : null;
+
   const ComponentProps = isTextArea
     ? {
         minRows: 7,
@@ -33,6 +36,7 @@ export const Input = ({
     : {
         fullWidth,
         InputProps: value.length > 0 ? InputProps : null,
+        error: value.length > 0 ? showError : null,
         size: "small",
         variant: "outlined",
       };
