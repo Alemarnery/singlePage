@@ -6,8 +6,10 @@ import {
   TextField,
   Typography,
   Button,
+  InputAdornment,
   MenuItem,
 } from "@material-ui/core";
+import CheckBox from "@material-ui/icons/CheckBox";
 import HelpOutlined from "@material-ui/icons/HelpOutlineOutlined";
 import { withStyles } from "@material-ui/core/styles";
 import { Input } from "./Components/Input";
@@ -36,6 +38,38 @@ const styles = (theme) => ({
 function App(props) {
   const { classes } = props;
   const [selectValue, setSelectValue] = useState(null);
+  const [inputs, setInputs] = useState({});
+  const [errors, setErrors] = useState({});
+
+  function handleValidation(e) {
+    const { value, name } = e.target;
+
+    setInputs({
+      ...inputs,
+      [name]: value,
+    });
+
+    if (!value.match(/^[a-zA-Z]+$/)) {
+      setErrors({
+        ...errors,
+        [name]: true,
+      });
+    } else {
+      setErrors({
+        ...errors,
+        [name]: false,
+      });
+    }
+  }
+
+  const onSubmit = () => {
+    //Si la variable errores existe, debo decir que inputs estan mal escritos.
+    //En caso contrario hacer el envio de los datos
+
+    alert("Si hay errores debo decirlo");
+  };
+
+  console.log(inputs);
 
   const names = ["Aperitif", "Option 2", "Other"];
 
@@ -44,7 +78,9 @@ function App(props) {
       <div className={classes.root}>
         <Grid container>
           <Grid item xs={12}>
-            <Typography variant="h3">Listing Score: 10</Typography>
+            <Typography variant="h3">
+              Listing Score: {inputs === null ? 0 : Object.keys(inputs).length}
+            </Typography>
           </Grid>
         </Grid>
 
@@ -58,28 +94,41 @@ function App(props) {
             item
             xs={12}
             sm={6}
-            className={[classes.gridFlex, classes.indentation]}
+            className={`${classes.gridFlex} ${classes.indentation}`}
           >
             <Typography variant="subtitle1" className={classes.question}>
-              What is the type of the wine?
+              What is the type of the wine? *
             </Typography>
           </Grid>
           <Grid item xs={12} sm={5} className={classes.gridFlex}>
-            <Input required error />
+            <Input
+              name="type"
+              required
+              onChange={(e) => handleValidation(e)}
+              value={inputs["type"] || ""}
+              errors={errors}
+            />
           </Grid>
 
           <Grid
             item
             xs={12}
             sm={6}
-            className={[classes.gridFlex, classes.indentation]}
+            className={`${classes.gridFlex} ${classes.indentation}`}
           >
             <Typography variant="subtitle1" className={classes.question}>
-              What is the vintage?
+              What is the vintage? *
             </Typography>
           </Grid>
           <Grid item xs={12} sm={5} className={classes.gridFlex}>
-            <Input required error fullWidth={false} />
+            <Input
+              name="vintage"
+              onChange={(e) => handleValidation(e)}
+              required
+              value={inputs["vintage"] || ""}
+              errors={errors}
+              fullWidth={false}
+            />
           </Grid>
 
           <Grid item xs={12} sm={6} className={classes.indentation}>
@@ -93,14 +142,21 @@ function App(props) {
             </Typography>
           </Grid>
           <Grid item xs={12} sm={5} className={classes.gridFlex}>
-            <Input style={{ width: "70%" }} isTextArea />
+            <Input
+              name="specific"
+              style={{ width: "70%" }}
+              isTextArea
+              value={inputs["specific"] || ""}
+              errors={errors}
+              onChange={(e) => handleValidation(e)}
+            />
           </Grid>
 
           <Grid
             item
             xs={12}
             sm={6}
-            className={[classes.gridFlex, classes.indentation]}
+            className={`${classes.gridFlex} ${classes.indentation}`}
           >
             <Typography variant="subtitle1" className={classes.question}>
               What type of wine is this?
@@ -109,12 +165,12 @@ function App(props) {
           <Grid item xs={12} sm={5} className={classes.gridFlex}>
             <HelpOutlined style={{ marginRight: "0.5rem" }} />
             <TextField
+              name="select"
               size="small"
               variant="outlined"
               style={{ minWidth: "23ch" }}
               select
               SelectProps={{
-                // value: personName,
                 onChange: (val) => setSelectValue(val.target.value),
                 multiline: true,
               }}
@@ -127,9 +183,13 @@ function App(props) {
             </TextField>
 
             <Input
+              name="other"
               showIcon={false}
               disabled={selectValue !== "Other"}
               style={{ marginLeft: "50px" }}
+              value={inputs["other"] || ""}
+              errors={errors}
+              onChange={(e) => handleValidation(e)}
             />
           </Grid>
         </Grid>
@@ -144,70 +204,98 @@ function App(props) {
             item
             xs={12}
             sm={6}
-            className={[classes.gridFlex, classes.indentation]}
+            className={`${classes.gridFlex} ${classes.indentation}`}
           >
             <Typography variant="subtitle1" className={classes.question}>
-              What is the color of wine?
+              What is the color of wine? *
             </Typography>
           </Grid>
           <Grid item xs={12} sm={6} className={classes.gridFlex}>
-            <Input required placeholder="Red, White, Rose, Orange" error />
+            <Input
+              name={"color"}
+              placeholder="Red, White, Rose, Orange"
+              value={inputs["color"] || ""}
+              errors={errors}
+              onChange={(e) => handleValidation(e)}
+            />
           </Grid>
 
           <Grid
             item
             xs={12}
             sm={6}
-            className={[classes.gridFlex, classes.indentation]}
+            className={`${classes.gridFlex} ${classes.indentation}`}
           >
             <Typography variant="subtitle1" className={classes.question}>
-              What is the style?
+              What is the style? *
             </Typography>
           </Grid>
           <Grid item xs={12} sm={6} className={classes.gridFlex}>
-            <Input required placeholder="Still, Sparkling" error />
+            <Input
+              name={"style"}
+              placeholder="Still, Sparkling"
+              value={inputs["style"] || ""}
+              errors={errors}
+              onChange={(e) => handleValidation(e)}
+            />
           </Grid>
 
           <Grid
             item
             xs={12}
             sm={6}
-            className={[classes.gridFlex, classes.indentation]}
+            className={`${classes.gridFlex} ${classes.indentation}`}
           >
             <Typography variant="subtitle1" className={classes.question}>
               What is the body?
             </Typography>
           </Grid>
           <Grid item xs={12} sm={6} className={classes.gridFlex}>
-            <Input placeholder="Round, Spicy, High Tannin, Fruity, Savory" />
+            <Input
+              name={"body"}
+              placeholder="Round, Spicy, High Tannin, Fruity, Savory"
+              value={inputs["body"] || ""}
+              errors={errors}
+              onChange={(e) => handleValidation(e)}
+            />
           </Grid>
 
           <Grid
             item
             xs={12}
             sm={6}
-            className={[classes.gridFlex, classes.indentation]}
+            className={`${classes.gridFlex} ${classes.indentation}`}
           >
             <Typography variant="subtitle1" className={classes.question}>
               What is the aroma?
             </Typography>
           </Grid>
           <Grid item xs={12} sm={6} className={classes.gridFlex}>
-            <Input />
+            <Input
+              name={"aroma"}
+              value={inputs["aroma"] || ""}
+              errors={errors}
+              onChange={(e) => handleValidation(e)}
+            />
           </Grid>
 
           <Grid
             item
             xs={12}
             sm={6}
-            className={[classes.gridFlex, classes.indentation]}
+            className={`${classes.gridFlex} ${classes.indentation}`}
           >
             <Typography variant="subtitle1" className={classes.question}>
               Do you have any personal tasting notes?
             </Typography>
           </Grid>
           <Grid item xs={12} sm={6} className={classes.gridFlex}>
-            <Input />
+            <Input
+              name={"tasting"}
+              value={inputs["tasting"] || ""}
+              errors={errors}
+              onChange={(e) => handleValidation(e)}
+            />
           </Grid>
 
           <Grid
@@ -219,7 +307,7 @@ function App(props) {
               marginTop: "2rem",
             }}
           >
-            <Button variant="contained" color="primary">
+            <Button variant="contained" color="primary" onClick={onSubmit}>
               Primary
             </Button>
           </Grid>
